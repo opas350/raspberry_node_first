@@ -1,6 +1,7 @@
 const express = require('express');
 const Gpio = require('onoff').Gpio;
 const led = new Gpio(17, 'out');
+const led2 = new Gpio(25, 'in');
 
 const app = express();
 const port = 3000;
@@ -19,6 +20,12 @@ app.post('/on', (req, res) => {
 
     res.send('Turning on LED');
     led.writeSync(1);
+});
+
+app.get('/status', (req, res) => {
+    console.log('Getting the status of GPIO 27')
+    // led2.readSync()
+    res.send(`Status of GPIO27 ${led2.readSync()}` )
 });
 
 app.listen(port, () => console.log(`App running on port ${port}`));
