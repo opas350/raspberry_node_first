@@ -1,10 +1,17 @@
 const express = require('express');
 const Gpio = require('onoff').Gpio;
 const led = new Gpio(17, 'out');
-const led2 = new Gpio(25, 'in');
+const led2 = new Gpio(25, 'in', 'both');
 
 const app = express();
 const port = 3000;
+
+const interv = setInterval(() => led.writeSync(led.readSync()^1), 200);
+
+setTimeout( _ => {
+    clearInterval(iv);
+    led.unexport();
+}, 5000);
 
 app.get('/', (req, res) => res.send('Hello World'));
 
