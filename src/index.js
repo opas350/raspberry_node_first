@@ -9,7 +9,7 @@ const port = 3000;
 const interv = setInterval(() => led.writeSync(led.readSync()^1), 200);
 
 setTimeout( _ => {
-    clearInterval(iv);
+    clearInterval(interv);
     led.unexport();
 }, 5000);
 
