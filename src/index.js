@@ -1,8 +1,9 @@
 const express = require('express');
 const Gpio = require('onoff').Gpio;
 const led = new Gpio(17, 'out');
-const led2 = new Gpio(25, 'in', 'both');
+const led2 = new Gpio(27, 'in', 'both');
 
+const request = require('request');
 const app = express();
 const port = 3000;
 
@@ -33,6 +34,31 @@ app.get('/status', (req, res) => {
     console.log('Getting the status of GPIO 27')
     // led2.readSync()
     res.send(`Status of GPIO27 ${led2.readSync()}` )
+});
+
+app.post('/lightsoff', async (req, res) => {
+    await request.post({
+        url: 'http://IPADDRESS/api/USERNAME/lights/N/state',
+        body: {
+            on: true,
+            bri: 0
+        }
+    });
+
+    res.send('Shutting down lights');
+});
+
+
+app.post('/lightson', async (req, res) => {
+    await request.post({
+        url: 'http://IPADDRESS/api/USERNAME/lights/N/state',
+        body: {
+            on: true,
+            bri: 254
+        }
+    });
+
+    res.send('Shutting down lights');
 });
 
 app.listen(port, () => console.log(`App running on port ${port}`));
